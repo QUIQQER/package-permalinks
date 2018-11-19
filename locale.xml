@@ -6,8 +6,8 @@
             <en><![CDATA[Permalinks]]></en>
         </locale>
         <locale name="package.description">
-            <de><![CDATA[Permalinks für Projekt Seiten anlegen]]></de>
-            <en><![CDATA[Create permalinks for projekt sites]]></en>
+            <de><![CDATA[Permalinks für Projekt Seiten anlegen.]]></de>
+            <en><![CDATA[Create permalinks for project sites.]]></en>
         </locale>
     </groups>
 

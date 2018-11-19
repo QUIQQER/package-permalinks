@@ -244,13 +244,7 @@ class Permalink
             self::setPermalinkForSite($Site, $permalink);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::writeException($Exception);
-
-            QUI::getMessagesHandler()->addError(
-                QUI::getLocale()->get(
-                    'quiqqer/permalinks',
-                    'message.could.not.set'
-                )
-            );
+            QUI::getMessagesHandler()->addError($Exception->getMessage());
         }
     }
 

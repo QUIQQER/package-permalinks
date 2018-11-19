@@ -34,14 +34,14 @@
         </locale>
 
         <locale name="exception.firstChild.cant.have.permalink">
-            <de><![CDATA[Die erste Seite kann kein Permalink besitzen.]]></de>
+            <de><![CDATA[Die erste Seite kann keinen Permalink besitzen.]]></de>
             <en><![CDATA[For the first site, you cannot set a permalink.]]></en>
         </locale>
         <locale name="exception.couldNotSet.site.has.permalink">
             <de>
-                <![CDATA[Die Seite besitzt schon einen Permalink. bitte löschen Sie diesen bevor Sie einen neuen Permalink setzen.]]></de>
+                <![CDATA[Die Seite besitzt schon einen Permalink. Bitte löschen Sie diesen bevor Sie einen neuen Permalink setzen.]]></de>
             <en>
-                <![CDATA[The page already has a permalink. Please delete the permalink before you put a new permalink.]]></en>
+                <![CDATA[The page already has a permalink. Please delete the permalink before you set a new permalink.]]></en>
         </locale>
         <locale name="exception.couldNotSet.already.exists">
             <de>
@@ -54,8 +54,8 @@
         </locale>
 
         <locale name="settings.title">
-            <de><![CDATA[Permalink Einstellungen]]></de>
-            <en><![CDATA[Permalink settings]]></en>
+            <de><![CDATA[Permalink]]></de>
+            <en><![CDATA[Permalink]]></en>
         </locale>
         <locale name="setting.permalink">
             <de><![CDATA[Permalink]]></de>
@@ -63,12 +63,12 @@
         </locale>
         <locale name="setting.permalink.description" html="true">
             <de><![CDATA[
-                <p>Ein Permalink (von permanent und hyperlink, auch Permanentlink) ist ein dauerhafter Identifikator in Form einer URL.</p>
-                <p>Bei der Einrichtung eines Permalinks wird angestrebt, die einmal über ihn referenzierten Inhalte dauerhaft und primär über diese URL verfügbar zu machen.</p>
+                <p>Ein Permalink ist eine dauerhaft vorhandene URL für diese Seite.</p>
+                <p>Dieser ändert sich nicht, selbst wenn Sie den Titel, oder die eigentliche URL, der Seite ändern.</p>
             ]]></de>
             <en><![CDATA[
-                <p>A Permalink (of permanent hyperlink and also Permanent Link) is a permanent identifier in the form of a URL.</p>
-                <p>When setting up a permalink, the goal of a permalink is, the content permanently and primarily via this URL available.</p>
+                <p>A permalink is a permanent URL for this page.</p>
+                <p>It does not change even if you change the title, or the actual URL, of the page.</p>
             ]]></en>
         </locale>
     </groups>

@@ -11,15 +11,9 @@
         <!-- Hauptbild -->
         <image src='URL_OPT_DIR/quiqqer/permalinks/bin/quiqqer_logo.png'/>
 
-         <!-- More preview images
         <preview>
-            <image src="URL_OPT_DIR/quiqqer/quiqqer/bin/preview/1.png"/>
-            <image src="URL_OPT_DIR/quiqqer/quiqqer/bin/preview/2.png"/>
-            <image src="URL_OPT_DIR/quiqqer/quiqqer/bin/preview/3.png"/>
-            <image src="URL_OPT_DIR/quiqqer/quiqqer/bin/preview/4.png"/>
-            <image src="URL_OPT_DIR/quiqqer/quiqqer/bin/preview/5.png"/>
+            <image src="URL_OPT_DIR/quiqqer/permalinks/bin/image/preview/1.jpg"/>
         </preview>
-        -->
 
     </package>
 </quiqqer>

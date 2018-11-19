@@ -14,7 +14,7 @@
                 </title>
 
                 <input conf="quiqqer.permalinks.site.permalink"
-                       data-qui="package/quiqqer/permalinks/bin/permalink/Input">
+                       data-qui="package/quiqqer/permalinks/bin/Input">
                     <text>
                         <locale group="quiqqer/permalinks" var="setting.permalink"/>
                     </text>

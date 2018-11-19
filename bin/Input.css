@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.permalink-input:disabled {
+    background: #ededed;
+    border: 1px solid #DDDDDD;
+    border-radius: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}

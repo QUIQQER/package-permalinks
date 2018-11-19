@@ -17,7 +17,7 @@
     "url": "https://www.pcsg.de"
   },
   "require": {
-    "quiqqer\/quiqqer": "*"
+    "quiqqer/quiqqer": "1.*"
   },
   "autoload": {
     "psr-4": {

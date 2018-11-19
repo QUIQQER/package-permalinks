@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+    <event on="onSiteSave" fire="\QUI\Permalinks\Permalink::onSave" />
+    <event on="onSiteSaveBefore" fire="\QUI\Permalinks\Permalink::onSiteSaveBefore" />
+    <event on="onSiteLoad" fire="\QUI\Permalinks\Permalink::onLoad" />
+    <event on="onRequest" fire="\QUI\Permalinks\Permalink::onRequest" />
+</events>

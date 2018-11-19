@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locales>
+  <groups name="quiqqer/permalinks" datatype="php,js">
+    <locale name="package.title">
+      <de><![CDATA[Permalinks]]></de>
+      <en><![CDATA[Permalinks]]></en>
+    </locale>
+  <locale name="package.description"><de><![CDATA[Permalinks für Projekt Seiten anlegen]]></de><en><![CDATA[Create permalinks for projekt sites]]></en></locale></groups>
+</locales>

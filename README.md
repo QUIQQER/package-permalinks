@@ -8,33 +8,37 @@ Paketname:
     quiqqer/permalinks
 
 
-Features (Funktionen)
+Features
 --------
 
+- Allows the creation of permalinks for project sites
 
 Installation
 ------------
 
-Der Paketname ist: quiqqer/permalinks
+The package name is: quiqqer/permalinks
 
 
-Mitwirken
+Contribute
 ----------
 
-- Issue Tracker: 
-- Source Code: 
+- Project: https://dev.quiqqer.com/quiqqer/package-permalinks
+- Issue Tracker: https://dev.quiqqer.com/quiqqer/package-permalinks/issues
+- Source Code: https://dev.quiqqer.com/quiqqer/package-permalinks/tree/master
 
 
 Support
 -------
 
-Falls Sie einen Fehler gefunden haben oder Verbesserungen wünschen,
-senden Sie bitte eine E-Mail an support@pcsg.de.
+If you have found errors, wishes or suggestions for improvement,
+you can contact us by email at [support@pcsg.de](mailto:support@pcsg.de).
+
+We will try to meet your needs or send them to the responsible developers
+of the project.
+
 
 
 Lizenz
 -------
 
-
-Entwickler
---------
+- GPL-3.0+

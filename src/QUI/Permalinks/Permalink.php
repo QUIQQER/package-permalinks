@@ -249,11 +249,11 @@ class Permalink
     }
 
     /**
-     * Event : on site save
+     * Event : on site load
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onLoad($Site)
+    public static function onSiteLoad($Site)
     {
         // if permalink exists, set the meta canonical
         try {

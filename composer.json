@@ -2,7 +2,7 @@
   "name": "quiqqer/permalinks",
   "type": "quiqqer-plugin",
   "description": "Create permalinks for your project sites.",
-  "version": "dev-dev",
+  "version": "dev-master",
   "license": "GPL-3.0+",
   "authors": [
     {

@@ -1,4 +1,4 @@
-package-permalinks
+![Permalinks](bin/image/Readme.jpg)
 ========
 
 Create permalinks for your project sites.

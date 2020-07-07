@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <!-- extra attributes -->
+    <attributes>
+        <attribute>quiqqer.permalinks.site.permalink</attribute>
+    </attributes>
+
+    <!-- global site settings -->
+    <settings>
+        <category name="permalinks.settings">
+            <settings>
+                <title>
+                    <locale group="quiqqer/permalinks" var="settings.title"/>
+                </title>
+
+                <input conf="quiqqer.permalinks.site.permalink"
+                       data-qui="package/quiqqer/permalinks/bin/Input">
+                    <text>
+                        <locale group="quiqqer/permalinks" var="setting.permalink"/>
+                    </text>
+                    <description>
+                        <locale group="quiqqer/permalinks" var="setting.permalink.description"/>
+                    </description>
+                </input>
+            </settings>
+        </category>
+    </settings>
+</site>

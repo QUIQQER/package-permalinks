@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locales>
+    <groups name="quiqqer/permalinks" datatype="php,js">
+        <locale name="package.title">
+            <de><![CDATA[Permalinks]]></de>
+            <en><![CDATA[Permalinks]]></en>
+        </locale>
+        <locale name="package.description">
+            <de><![CDATA[Permalinks für Projekt Seiten anlegen.]]></de>
+            <en><![CDATA[Create permalinks for project sites.]]></en>
+        </locale>
+    </groups>
+
+
+    <groups name="quiqqer/permalinks" datatype="js">
+        <locale name="button.delete.text">
+            <de><![CDATA[Permalink löschen]]></de>
+            <en><![CDATA[Delete permalink]]></en>
+        </locale>
+        <locale name="window.delete.title">
+            <de><![CDATA[Permalink löschen]]></de>
+            <en><![CDATA[Delete permalink]]></en>
+        </locale>
+        <locale name="window.delete.text">
+            <de><![CDATA[Möchten Sie den Permalink für die Seite #[id] wirklich löschen?]]></de>
+            <en><![CDATA[Do you really want to delete the permalink of the site #[id]]]></en>
+        </locale>
+    </groups>
+
+    <groups name="quiqqer/permalinks" datatype="php">
+        <locale name="message.could.not.set">
+            <de><![CDATA[Es ist ein Fehler aufgetreten. Der Permalink konnte nicht gesetzt werden.]]></de>
+            <en><![CDATA[An error occurred. The Permalink could not be set.]]></en>
+        </locale>
+
+        <locale name="exception.firstChild.cant.have.permalink">
+            <de><![CDATA[Die erste Seite kann keinen Permalink besitzen.]]></de>
+            <en><![CDATA[For the first site, you cannot set a permalink.]]></en>
+        </locale>
+        <locale name="exception.couldNotSet.site.has.permalink">
+            <de>
+                <![CDATA[Die Seite besitzt schon einen Permalink. Bitte löschen Sie diesen bevor Sie einen neuen Permalink setzen.]]></de>
+            <en>
+                <![CDATA[The page already has a permalink. Please delete the permalink before you set a new permalink.]]></en>
+        </locale>
+        <locale name="exception.couldNotSet.already.exists">
+            <de>
+                <![CDATA[Der Permalink konnte nicht gesetzt werden. Der Permalink wurde schon einer anderen Seite zugewiesen.]]></de>
+            <en><![CDATA[The permalink could not be set. The permalink was already assigned to another site.]]></en>
+        </locale>
+        <locale name="exception.not.found">
+            <de><![CDATA[Der Permalink wurde nicht gefunden.]]></de>
+            <en><![CDATA[The permalink could not be found.]]></en>
+        </locale>
+
+        <locale name="settings.title">
+            <de><![CDATA[Permalink]]></de>
+            <en><![CDATA[Permalink]]></en>
+        </locale>
+        <locale name="setting.permalink">
+            <de><![CDATA[Permalink]]></de>
+            <en><![CDATA[Permalink]]></en>
+        </locale>
+        <locale name="setting.permalink.description" html="true">
+            <de><![CDATA[
+                <p>Ein Permalink ist eine dauerhaft vorhandene URL für diese Seite.</p>
+                <p>Dieser ändert sich nicht, selbst wenn Sie den Titel, oder die eigentliche URL, der Seite ändern.</p>
+            ]]></de>
+            <en><![CDATA[
+                <p>A permalink is a permanent URL for this page.</p>
+                <p>It does not change even if you change the title, or the actual URL, of the page.</p>
+            ]]></en>
+        </locale>
+    </groups>
+</locales>

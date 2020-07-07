@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<database>
+    <projects>
+        <table name="permalinks" no-project-lang="1">
+            <field type="bigint(20)">id</field>
+            <field type="varchar(2)">lang</field>
+            <field type="text NULL">link</field>
+            <primary>id,lang</primary>
+        </table>
+    </projects>
+</database>

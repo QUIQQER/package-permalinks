@@ -1,5 +1,7 @@
 <?php
+
 use QUI\System\Log;
+
 /**
  * Clear a site name
  *

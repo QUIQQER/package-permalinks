@@ -79,7 +79,6 @@ class Permalink
             );
         }
 
-
         // @TODO permalink prüfen ob dieser verwendet werden darf
 
         QUI::getDataBase()->insert($table, [
@@ -158,9 +157,14 @@ class Permalink
      */
     public static function updatePermaLink($Site, $permalink){
 
+        QUI\System\Log::writeRecursive([
+            'updating the Permalink to:' => $permalink,
+            'for Site Id:' => $Site->getId()
+        ]);
         $Project = $Site->getproject();
         $table   = QUI::getDBProjectTableName('permalinks', $Project, false);
 
+        /** or update */
         QUI::getDataBase()->replace($table, [
             'id'   => $Site->getId(),
             'lang' => $Project->getLang(),
@@ -269,9 +273,9 @@ class Permalink
     {
 
         if (!$Site->getAttribute('quiqqer.permalinks.site.permalink')) {
-            QUI\System\Log::writeRecursive([
-                'Event onsiteSave triggered in permalink' => 'returning out of Nichtigkeiten'
-            ]);
+//            QUI\System\Log::writeRecursive([
+//                'Event onsiteSave triggered in permalink' => 'returning out of Nichtigkeiten'
+//            ]);
             return;
         }
 
@@ -361,6 +365,7 @@ class Permalink
         }
 
         $url = \str_replace(' ', QUI\Rewrite::URL_SPACE_CHARACTER, $url);
+//        QUI\System\Log::writeRecursive(['calculated Permalink is:' => $url]);
 
         return $url;
     }

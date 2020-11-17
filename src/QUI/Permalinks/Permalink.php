@@ -7,6 +7,7 @@
 namespace QUI\Permalinks;
 
 use QUI;
+use QUI\Utils\Security\Orthos;
 
 /**
  * Permalink class
@@ -77,7 +78,6 @@ class Permalink
                 409
             );
         }
-
 
         // @TODO permalink prüfen ob dieser verwendet werden darf
 
@@ -212,7 +212,7 @@ class Permalink
     public static function onSiteSaveBefore($Site)
     {
         $permalink = $Site->getAttribute('quiqqer.permalinks.site.permalink');
-        $permalink = QUI\Projects\Site\Utils::clearUrl($permalink, $Site->getProject());
+        $permalink = self::clearPermaLinkUrl($permalink, $Site->getProject());
 
         $Site->setAttribute('quiqqer.permalinks.site.permalink', $permalink);
     }
@@ -224,12 +224,14 @@ class Permalink
      */
     public static function onSave($Site)
     {
+
         if (!$Site->getAttribute('quiqqer.permalinks.site.permalink')) {
+//            QUI\System\Log::writeRecursive(['Event onsiteSave triggered in permalink' => 'returning']);
             return;
         }
 
         $permalink = $Site->getAttribute('quiqqer.permalinks.site.permalink');
-        $permalink = QUI\Projects\Site\Utils::clearUrl($permalink, $Site->getProject());
+        $permalink = self::clearPermaLinkUrl($permalink, $Site->getProject());
 
         try {
             $oldLink = self::getPermalinkForSite($Site);
@@ -246,6 +248,77 @@ class Permalink
             QUI\System\Log::writeException($Exception);
             QUI::getMessagesHandler()->addError($Exception->getMessage());
         }
+    }
+
+    /**
+     * Clean a URL -> makes it beautiful
+     * unwanted signs will be converted or filtered
+     *
+     * @param string $url
+     * @param QUI\Projects\Project|null $Project - optional, Project clear extension
+     *
+     * @return string
+     */
+    public static function clearPermaLinkUrl($url, QUI\Projects\Project $Project = null)
+    {
+        // space separator
+        $url = \str_replace(QUI\Rewrite::URL_SPACE_CHARACTER, ' ', $url);
+
+        // clear
+        $signs = [
+//            '-',
+            '.',            // put in 17.11.2020
+            ',',
+            ':',
+            ';',
+            '#',
+            '`',
+            '!',
+            '§',
+            '$',
+            '%',
+            '&',
+            '?',
+            '<',
+            '>',
+            '=',
+            '\'',
+            '"',
+            '@',
+            '_',            // put in 17.11.2020
+            ']',
+            '[',
+            '+',
+            '/'            // put in 17.11.2020
+        ];
+
+        $url = \str_replace($signs, '', $url);
+        //$url = preg_replace('[-.,:;#`!§$%&/?<>\=\'\"\@\_\]\[\+]', '', $url);
+
+        // doppelte leerzeichen löschen
+        $url = \preg_replace('/([ ]){2,}/', "$1", $url);
+
+        // URL Filter
+        if ($Project !== null) {
+            $name   = $Project->getAttribute('name');
+            $filter = USR_DIR.'lib/'.$name.'/url.filter.php';
+            $func   = 'url_filter_'.$name;
+
+            $filter = Orthos::clearPath(\realpath($filter));
+
+            if (\file_exists($filter)) {
+                require_once $filter;
+
+                if (\function_exists($func)) {
+                    $url = $func($url);
+                }
+            }
+        }
+
+        $url = \str_replace(' ', QUI\Rewrite::URL_SPACE_CHARACTER, $url);
+//        QUI\System\Log::writeRecursive(['calculated Permalink is:' => $url]);
+
+        return $url;
     }
 
     /**

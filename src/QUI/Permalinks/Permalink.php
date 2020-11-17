@@ -155,8 +155,8 @@ class Permalink
      * @param $permalink
      * @throws QUI\Database\Exception
      */
-    public static function updatePermaLink($Site, $permalink){
-
+    public static function updatePermaLink($Site, $permalink)
+    {
         QUI\System\Log::writeRecursive([
             'updating the Permalink to:' => $permalink,
             'for Site Id:' => $Site->getId()

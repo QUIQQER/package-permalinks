@@ -9,6 +9,9 @@ namespace QUI\Permalinks;
 use QUI;
 use QUI\Utils\Security\Orthos;
 
+use \Symfony\Component\HttpFoundation\RedirectResponse;
+use \Symfony\Component\HttpFoundation\Response;
+
 /**
  * Permalink class
  *
@@ -145,7 +148,6 @@ class Permalink
             ],
             'limit' => 1
         ]);
-
 
         if (!isset($result[0])) {
             $params = explode(QUI\Rewrite::URL_PARAM_SEPARATOR, $url);
@@ -354,7 +356,7 @@ class Permalink
     public static function onRequest(QUI\Rewrite $Rewrite, $url)
     {
         // media files are irrelevant
-        if (strpos($url, 'media/cache') !== false) {
+        if (\strpos($url, 'media/cache') !== false) {
             return;
         }
 
@@ -365,6 +367,18 @@ class Permalink
         try {
             $Project = $Rewrite->getProject();
             $Site    = self::getSiteByPermalink($Project, $url);
+
+            if (\strpos($url, '.html') !== false
+                && (int)QUI::conf('globals', 'htmlSuffix') === 0) {
+                // redirect to original site
+                $Redirect = new RedirectResponse($Site->getUrlRewritten());
+                $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);
+
+                echo $Redirect->getContent();
+                $Redirect->send();
+                exit;
+            }
+
             $Rewrite->setSite($Site);
         } catch (QUI\Exception $Exception) {
         }

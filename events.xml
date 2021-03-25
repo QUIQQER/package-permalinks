@@ -4,4 +4,5 @@
     <event on="onSiteSaveBefore" fire="\QUI\Permalinks\Permalink::onSiteSaveBefore" />
     <event on="onSiteLoad" fire="\QUI\Permalinks\Permalink::onSiteLoad" />
     <event on="onRequest" fire="\QUI\Permalinks\Permalink::onRequest" />
+    <event on="onUrlRewritten" fire="\QUI\Permalinks\Permalink::onUrlRewritten" />
 </events>

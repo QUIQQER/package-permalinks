@@ -389,7 +389,8 @@ class Permalink
     /**
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onUrlRewritten($Site, &$url) {
+    public static function onUrlRewritten($Site, &$url)
+    {
         // try getting the permalink for siteId
         try {
             $permalinkForSite = self::getPermalinkForSite($Site);

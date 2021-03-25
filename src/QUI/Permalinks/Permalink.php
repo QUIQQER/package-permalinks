@@ -242,7 +242,6 @@ class Permalink
                 return;
             }
         } catch (QUI\Exception $Exception) {
-
         }
 
         try {
@@ -391,7 +390,6 @@ class Permalink
      * @param \QUI\Projects\Site\Edit $Site
      */
     public static function onUrlRewritten ($Site, &$url) {
-
         // try getting the permalink for siteId
         try {
             $permalinkForSite = self::getPermalinkForSite($Site);
@@ -400,5 +398,4 @@ class Permalink
 //            QUI\System\Log::writeException($Exception);
         }
     }
-
 }

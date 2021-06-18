@@ -247,8 +247,12 @@ class Permalink
         try {
             self::setPermalinkForSite($Site, $permalink);
         } catch (QUI\Exception $Exception) {
-            QUI\System\Log::writeException($Exception);
-            QUI::getMessagesHandler()->addError($Exception->getMessage());
+            if ($Exception->getCode() === 409) {
+                QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
+            } else {
+                QUI\System\Log::writeException($Exception);
+                QUI::getMessagesHandler()->addError($Exception->getMessage());
+            }
         }
     }
 

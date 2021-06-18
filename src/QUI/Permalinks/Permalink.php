@@ -382,7 +382,11 @@ class Permalink
 
             $Rewrite->setSite($Site);
         } catch (QUI\Exception $Exception) {
-            QUI\System\Log::writeException($Exception);
+            if ($Exception->getCode() === 404) {
+                QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
+            } else {
+                QUI\System\Log::writeException($Exception);
+            }
         }
     }
 

@@ -366,6 +366,7 @@ class Permalink
 
         try {
             $Project = $Rewrite->getProject();
+
             $Site    = self::getSiteByPermalink($Project, $url);
 
             if (\strpos($url, '.html') !== false
@@ -381,6 +382,25 @@ class Permalink
 
             $Rewrite->setSite($Site);
         } catch (QUI\Exception $Exception) {
+            if ($Exception->getCode() === 404) {
+                QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
+            } else {
+                QUI\System\Log::writeException($Exception);
+            }
+        }
+    }
+
+    /**
+     * @param \QUI\Projects\Site\Edit $Site
+     */
+    public static function onUrlRewritten($Site, &$url)
+    {
+        // try getting the permalink for siteId
+        try {
+            $permalinkForSite = self::getPermalinkForSite($Site);
+            $url = $permalinkForSite;
+        } catch (\Exception $Exception) {
+//            QUI\System\Log::writeException($Exception);
         }
     }
 }

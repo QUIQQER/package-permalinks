@@ -12,12 +12,15 @@ define('package/quiqqer/permalinks/bin/Input', [
     'qui/controls/buttons/Button',
     'qui/controls/windows/Confirm',
     'qui/controls/messages/Information',
+
+    'utils/Controls',
+
     'Ajax',
     'Locale',
 
     'css!package/quiqqer/permalinks/bin/Input.css'
 
-], function (QUI, QUIControl, QUIButton, QUIConfirm, QUIInformation, Ajax, Locale) {
+], function (QUI, QUIControl, QUIButton, QUIConfirm, QUIInformation, QUIControlUtils, Ajax, Locale) {
     "use strict";
 
     var lg = 'quiqqer/permalinks';
@@ -29,7 +32,8 @@ define('package/quiqqer/permalinks/bin/Input', [
 
         Binds: [
             'deletePermalink',
-            '$onImport'
+            '$onImport',
+            '$onSiteSave'
         ],
 
         initialize: function (options) {
@@ -78,10 +82,15 @@ define('package/quiqqer/permalinks/bin/Input', [
                 this.$DeleteButton.enable();
             }
 
+            QUIControlUtils.getControlByElement(this.$Elm.getParent('.qui-panel')).then((SitePanel) => {
+                if (SitePanel) {
+                    SitePanel.getSite().addEvent('onSave', this.$onSiteSave);
+                }
+            });
+
             Container.replaces(this.$Elm);
 
             this.$Elm = Container;
-
 
             // id 1 cant have a permalink
             var PanelElm = this.$Elm.getParent('.qui-panel'),
@@ -97,6 +106,19 @@ define('package/quiqqer/permalinks/bin/Input', [
                         marginBottom: 10
                     }
                 }).inject(this.$Elm);
+            }
+        },
+
+        /**
+         * Event: onSiteSave
+         */
+        $onSiteSave: function () {
+            if (this.$Input.value !== '') {
+                this.$Input.disabled = true;
+                this.$DeleteButton.enable();
+            } else {
+                this.$Input.disabled = false;
+                this.$DeleteButton.disable();
             }
         },
 

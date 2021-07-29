@@ -295,7 +295,7 @@ class Permalink
             ']',
             '[',
             '+',
-            '/'            // put in 17.11.2020
+//            '/'            // put in 17.11.2020
         ];
 
         $url = \str_replace($signs, '', $url);

@@ -247,8 +247,12 @@ class Permalink
         try {
             self::setPermalinkForSite($Site, $permalink);
         } catch (QUI\Exception $Exception) {
-            QUI\System\Log::writeException($Exception);
-            QUI::getMessagesHandler()->addError($Exception->getMessage());
+            if ($Exception->getCode() === 409) {
+                QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
+            } else {
+                QUI\System\Log::writeException($Exception);
+                QUI::getMessagesHandler()->addError($Exception->getMessage());
+            }
         }
     }
 
@@ -291,7 +295,7 @@ class Permalink
             ']',
             '[',
             '+',
-            '/'            // put in 17.11.2020
+//            '/'            // put in 17.11.2020
         ];
 
         $url = \str_replace($signs, '', $url);
@@ -382,7 +386,9 @@ class Permalink
 
             $Rewrite->setSite($Site);
         } catch (QUI\Exception $Exception) {
-            if ($Exception->getCode() === 404) {
+            if ($Exception->getCode() === 705) {
+                QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
+            } elseif ($Exception->getCode() === 404) {
                 QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
             } else {
                 QUI\System\Log::writeException($Exception);

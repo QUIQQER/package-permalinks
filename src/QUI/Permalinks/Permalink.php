@@ -389,7 +389,7 @@ class Permalink
             if ($Exception->getCode() === 705) {
                 QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
             } elseif ($Exception->getCode() === 404) {
-                QUI\System\Log::writeException($Exception, QUI\System\Log::LEVEL_INFO);
+                QUI\System\Log::writeDebugException($Exception);
             } else {
                 QUI\System\Log::writeException($Exception);
             }

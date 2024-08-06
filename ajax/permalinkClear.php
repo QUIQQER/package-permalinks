@@ -10,6 +10,7 @@ use QUI\System\Log;
  *
  * @return string
  */
+
 QUI::$Ajax->registerFunction(
     'package_quiqqer_permalinks_ajax_permalinkClear',
     function ($project, $name) {

@@ -319,17 +319,21 @@ class Permalink
 
         // URL Filter
         if ($Project !== null) {
-            $name   = $Project->getAttribute('name');
+            $name   = $Project->getName();
             $filter = USR_DIR . 'lib/' . $name . '/url.filter.php';
             $func   = 'url_filter_' . $name;
 
-            $filter = Orthos::clearPath(\realpath($filter));
+            $filter = realpath($filter);
 
-            if (\file_exists($filter)) {
-                require_once $filter;
+            if ($filter !== false) {
+                $filter = Orthos::clearPath($filter);
 
-                if (\function_exists($func)) {
-                    $url = $func($url);
+                if (is_string($filter) && file_exists($filter)) {
+                    require_once $filter;
+
+                    if (function_exists($func)) {
+                        $url = $func($url);
+                    }
                 }
             }
         }

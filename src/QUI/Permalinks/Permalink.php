@@ -7,6 +7,7 @@
 namespace QUI\Permalinks;
 
 use QUI;
+use QUI\Utils\Doctrine;
 use QUI\Utils\Security\Orthos;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,7 +84,7 @@ class Permalink
 
         // @TODO permalink prüfen ob dieser verwendet werden darf
 
-        QUI::getDataBase()->insert($table, [
+        QUI::getDataBaseConnection()->insert($table, [
             'id'   => $Site->getId(),
             'lang' => $Project->getLang(),
             'link' => $permalink
@@ -105,16 +106,19 @@ class Permalink
         $Project = $Site->getProject();
         $table   = QUI::getDBProjectTableName('permalinks', $Project, false);
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => $table,
-            'where' => [
-                'id'   => $Site->getId(),
-                'lang' => $Project->getLang()
-            ],
-            'limit' => 1
-        ]);
+        $QueryBuilder = QUI::getQueryBuilder();
+        $result = $QueryBuilder
+            ->select(Doctrine::quoteIdentifier('link'))
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('id'), ':siteId'))
+            ->andWhere($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('lang'), ':language'))
+            ->setParameter('siteId', $Site->getId())
+            ->setParameter('language', $Project->getLang())
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-        if (!isset($result[0])) {
+        if ($result === false) {
             throw new QUI\Exception(
                 QUI::getLocale()->get(
                     'quiqqer/permalinks',
@@ -124,7 +128,7 @@ class Permalink
             );
         }
 
-        return $result[0]['link'];
+        return $result['link'];
     }
 
     /**
@@ -140,33 +144,43 @@ class Permalink
     {
         $table = QUI::getDBProjectTableName('permalinks', $Project, false);
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => $table,
-            'where' => [
-                'link' => $url
-            ],
-            'limit' => 1
-        ]);
+        $QueryBuilder = QUI::getQueryBuilder();
+        $result = $QueryBuilder
+            ->select(
+                Doctrine::quoteIdentifier('id'),
+                Doctrine::quoteIdentifier('lang')
+            )
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('link'), ':link'))
+            ->setParameter('link', $url)
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-        if (!isset($result[0])) {
+        if ($result === false) {
             $params = explode(QUI\Rewrite::URL_PARAM_SEPARATOR, $url);
             $url    = $params[0] . QUI\Rewrite::getDefaultSuffix();
 
-            $result = QUI::getDataBase()->fetch([
-                'from'  => $table,
-                'where' => [
-                    'link' => $url
-                ],
-                'limit' => 1
-            ]);
+            $QueryBuilder = QUI::getQueryBuilder();
+            $result = $QueryBuilder
+                ->select(
+                    Doctrine::quoteIdentifier('id'),
+                    Doctrine::quoteIdentifier('lang')
+                )
+                ->from(Doctrine::quoteIdentifier($table))
+                ->where($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('link'), ':link'))
+                ->setParameter('link', $url)
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative();
 
-            if (isset($result[0])) {
+            if ($result !== false) {
                 $_Project = QUI::getProjectManager()->getProject(
                     $Project->getName(),
-                    $result[0]['lang']
+                    $result['lang']
                 );
 
-                return $_Project->get($result[0]['id']);
+                return $_Project->get($result['id']);
             }
 
             throw new QUI\Exception(
@@ -177,10 +191,10 @@ class Permalink
 
         $PermalinkProject = \QUI::getProjectManager()->getProject(
             $Project->getName(),
-            $result[0]['lang']
+            $result['lang']
         );
 
-        return $PermalinkProject->get($result[0]['id']);
+        return $PermalinkProject->get($result['id']);
     }
 
     /**
@@ -195,7 +209,7 @@ class Permalink
         $Project = $Site->getProject();
         $table   = QUI::getDBProjectTableName('permalinks', $Project, false);
 
-        QUI::getDataBase()->delete($table, [
+        QUI::getDataBaseConnection()->delete($table, [
             'id'   => $Site->getId(),
             'lang' => $Project->getLang()
         ]);

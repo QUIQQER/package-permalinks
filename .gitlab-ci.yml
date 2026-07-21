@@ -13,7 +13,11 @@ phpunit-php8.2:
   rules:
     - when: never
 
-# Remove the entire phpunit-php8.3 block, to allow PHPUnit to run on PHP 8.3 in your pipeline
-phpunit-php8.3:
+# The QUIQQER 1 test image is only available up to PHP 8.3.
+phpunit-php8.4:
+  rules:
+    - when: never
+
+phpunit-php8.5:
   rules:
     - when: never

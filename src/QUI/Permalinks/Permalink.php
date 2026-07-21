@@ -175,12 +175,12 @@ class Permalink
                 ->fetchAssociative();
 
             if ($result !== false) {
-                $_Project = QUI::getProjectManager()->getProject(
+                $PermalinkProject = QUI::getProjectManager()->getProject(
                     $Project->getName(),
                     $result['lang']
                 );
 
-                return $_Project->get($result['id']);
+                return $PermalinkProject->get($result['id']);
             }
 
             throw new QUI\Exception(

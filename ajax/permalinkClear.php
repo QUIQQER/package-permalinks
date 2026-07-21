@@ -1,8 +1,6 @@
 <?php
 
-use QUI\System\Log;
-
-QUI::$Ajax->registerFunction(
+QUI::getAjax()->registerFunction(
     'package_quiqqer_permalinks_ajax_permalinkClear',
     /**
      * Clear a site name

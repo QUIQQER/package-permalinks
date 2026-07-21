@@ -3,10 +3,11 @@
 <database>
     <projects>
         <table name="permalinks" no-project-lang="1">
-            <field type="bigint(20)">id</field>
-            <field type="varchar(2)">lang</field>
-            <field type="text NULL">link</field>
+            <field type="bigint">id</field>
+            <field type="string" length="2">lang</field>
+            <field type="text" nullable="true" default="null">link</field>
             <primary>id,lang</primary>
+            <index>link</index>
         </table>
     </projects>
 </database>

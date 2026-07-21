@@ -1,14 +1,14 @@
 {
     "name": "quiqqer/permalinks",
-    "type": "quiqqer-plugin",
+    "type": "quiqqer-module",
     "description": "Create permalinks for your project sites.",
-    "license": "GPL-3.0+",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
-            "name": "Jan Wennrich",
-            "email": "info@pcsg.de",
-            "homepage": "https://www.pcsg.de",
-            "role": "Developer"
+            "name": "PCSG - Computer & Internet Service OHG",
+            "email": "info@quiqqer.com",
+            "homepage": "https://www.quiqqer.com",
+            "role": "Maintainer"
         }
     ],
     "support": {
@@ -16,11 +16,17 @@
         "url": "https://www.pcsg.de"
     },
     "require": {
-        "quiqqer/quiqqer": "1.*|dev-master|dev-dev"
+        "php": "^8.2",
+        "quiqqer/core": "^2"
     },
     "autoload": {
         "psr-4": {
-            "QUI\\Permalinks\\": "src/QUI/Permalinks"
+            "QUI\\Permalinks\\": "src/QUI/Permalinks/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "QUITests\\Permalinks\\": "tests/"
         }
     },
     "scripts": {

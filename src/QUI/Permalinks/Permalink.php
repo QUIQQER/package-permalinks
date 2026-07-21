@@ -7,6 +7,7 @@
 namespace QUI\Permalinks;
 
 use QUI;
+use QUI\Utils\Doctrine;
 use QUI\Utils\Security\Orthos;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,7 +84,7 @@ class Permalink
 
         // @TODO permalink prüfen ob dieser verwendet werden darf
 
-        QUI::getDataBase()->insert($table, [
+        QUI::getDataBaseConnection()->insert($table, [
             'id'   => $Site->getId(),
             'lang' => $Project->getLang(),
             'link' => $permalink
@@ -105,16 +106,19 @@ class Permalink
         $Project = $Site->getProject();
         $table   = QUI::getDBProjectTableName('permalinks', $Project, false);
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => $table,
-            'where' => [
-                'id'   => $Site->getId(),
-                'lang' => $Project->getLang()
-            ],
-            'limit' => 1
-        ]);
+        $QueryBuilder = QUI::getQueryBuilder();
+        $result = $QueryBuilder
+            ->select(Doctrine::quoteIdentifier('link'))
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('id'), ':siteId'))
+            ->andWhere($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('lang'), ':language'))
+            ->setParameter('siteId', $Site->getId())
+            ->setParameter('language', $Project->getLang())
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-        if (!isset($result[0])) {
+        if ($result === false) {
             throw new QUI\Exception(
                 QUI::getLocale()->get(
                     'quiqqer/permalinks',
@@ -124,7 +128,7 @@ class Permalink
             );
         }
 
-        return $result[0]['link'];
+        return $result['link'];
     }
 
     /**
@@ -140,33 +144,43 @@ class Permalink
     {
         $table = QUI::getDBProjectTableName('permalinks', $Project, false);
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => $table,
-            'where' => [
-                'link' => $url
-            ],
-            'limit' => 1
-        ]);
+        $QueryBuilder = QUI::getQueryBuilder();
+        $result = $QueryBuilder
+            ->select(
+                Doctrine::quoteIdentifier('id'),
+                Doctrine::quoteIdentifier('lang')
+            )
+            ->from(Doctrine::quoteIdentifier($table))
+            ->where($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('link'), ':link'))
+            ->setParameter('link', $url)
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
 
-        if (!isset($result[0])) {
+        if ($result === false) {
             $params = explode(QUI\Rewrite::URL_PARAM_SEPARATOR, $url);
             $url    = $params[0] . QUI\Rewrite::getDefaultSuffix();
 
-            $result = QUI::getDataBase()->fetch([
-                'from'  => $table,
-                'where' => [
-                    'link' => $url
-                ],
-                'limit' => 1
-            ]);
+            $QueryBuilder = QUI::getQueryBuilder();
+            $result = $QueryBuilder
+                ->select(
+                    Doctrine::quoteIdentifier('id'),
+                    Doctrine::quoteIdentifier('lang')
+                )
+                ->from(Doctrine::quoteIdentifier($table))
+                ->where($QueryBuilder->expr()->eq(Doctrine::quoteIdentifier('link'), ':link'))
+                ->setParameter('link', $url)
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative();
 
-            if (isset($result[0])) {
-                $_Project = QUI::getProjectManager()->getProject(
+            if ($result !== false) {
+                $PermalinkProject = QUI::getProjectManager()->getProject(
                     $Project->getName(),
-                    $result[0]['lang']
+                    $result['lang']
                 );
 
-                return $_Project->get($result[0]['id']);
+                return $PermalinkProject->get($result['id']);
             }
 
             throw new QUI\Exception(
@@ -177,10 +191,10 @@ class Permalink
 
         $PermalinkProject = \QUI::getProjectManager()->getProject(
             $Project->getName(),
-            $result[0]['lang']
+            $result['lang']
         );
 
-        return $PermalinkProject->get($result[0]['id']);
+        return $PermalinkProject->get($result['id']);
     }
 
     /**
@@ -190,12 +204,12 @@ class Permalink
      *
      * @throws \QUI\Exception
      */
-    public static function deletePermalinkForSite($Site)
+    public static function deletePermalinkForSite($Site): void
     {
         $Project = $Site->getProject();
         $table   = QUI::getDBProjectTableName('permalinks', $Project, false);
 
-        QUI::getDataBase()->delete($table, [
+        QUI::getDataBaseConnection()->delete($table, [
             'id'   => $Site->getId(),
             'lang' => $Project->getLang()
         ]);
@@ -210,7 +224,7 @@ class Permalink
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onSiteSaveBefore($Site)
+    public static function onSiteSaveBefore($Site): void
     {
         $permalink = $Site->getAttribute('quiqqer.permalinks.site.permalink');
         $permalink = self::clearPermaLinkUrl($permalink, $Site->getProject());
@@ -223,7 +237,7 @@ class Permalink
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onSave($Site)
+    public static function onSave($Site): void
     {
 
         if (!$Site->getAttribute('quiqqer.permalinks.site.permalink')) {
@@ -267,7 +281,7 @@ class Permalink
     public static function clearPermaLinkUrl($url, QUI\Projects\Project $Project = null)
     {
         // space separator
-        $url = \str_replace(QUI\Rewrite::URL_SPACE_CHARACTER, ' ', $url);
+        $url = str_replace(QUI\Rewrite::URL_SPACE_CHARACTER, ' ', $url);
 
         // clear
         $signs = [
@@ -297,30 +311,34 @@ class Permalink
 //            '/'            // put in 17.11.2020
         ];
 
-        $url = \str_replace($signs, '', $url);
+        $url = str_replace($signs, '', $url);
         //$url = preg_replace('[-.,:;#`!§$%&/?<>\=\'\"\@\_\]\[\+]', '', $url);
 
         // doppelte leerzeichen löschen
-        $url = \preg_replace('/([ ]){2,}/', "$1", $url);
+        $url = preg_replace('/([ ]){2,}/', "$1", $url);
 
         // URL Filter
         if ($Project !== null) {
-            $name   = $Project->getAttribute('name');
+            $name   = $Project->getName();
             $filter = USR_DIR . 'lib/' . $name . '/url.filter.php';
             $func   = 'url_filter_' . $name;
 
-            $filter = Orthos::clearPath(\realpath($filter));
+            $filter = realpath($filter);
 
-            if (\file_exists($filter)) {
-                require_once $filter;
+            if ($filter !== false) {
+                $filter = Orthos::clearPath($filter);
 
-                if (\function_exists($func)) {
-                    $url = $func($url);
+                if (is_string($filter) && file_exists($filter)) {
+                    require_once $filter;
+
+                    if (function_exists($func)) {
+                        $url = $func($url);
+                    }
                 }
             }
         }
 
-        $url = \str_replace(' ', QUI\Rewrite::URL_SPACE_CHARACTER, $url);
+        $url = str_replace(' ', QUI\Rewrite::URL_SPACE_CHARACTER, $url);
 //        QUI\System\Log::writeRecursive(['calculated Permalink is:' => $url]);
 
         return $url;
@@ -331,7 +349,7 @@ class Permalink
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onSiteLoad($Site)
+    public static function onSiteLoad($Site): void
     {
         // if permalink exists, set the meta canonical
         try {
@@ -356,10 +374,10 @@ class Permalink
      * @param \QUI\Rewrite $Rewrite
      * @param string $url
      */
-    public static function onRequest(QUI\Rewrite $Rewrite, $url)
+    public static function onRequest(QUI\Rewrite $Rewrite, string $url): void
     {
         // media files are irrelevant
-        if (\strpos($url, 'media/cache') !== false) {
+        if (strpos($url, 'media/cache') !== false) {
             return;
         }
 
@@ -370,10 +388,14 @@ class Permalink
         try {
             $Project = $Rewrite->getProject();
 
-            $Site    = self::getSiteByPermalink($Project, $url);
+            if ($Project === null) {
+                return;
+            }
+
+            $Site = self::getSiteByPermalink($Project, $url);
 
             if (
-                \strpos($url, '.html') !== false
+                strpos($url, '.html') !== false
                 && (int)QUI::conf('globals', 'htmlSuffix') === 0
             ) {
                 // redirect to original site
@@ -399,8 +421,9 @@ class Permalink
 
     /**
      * @param \QUI\Projects\Site\Edit $Site
+     * @param string $url
      */
-    public static function onUrlRewritten($Site, &$url)
+    public static function onUrlRewritten($Site, string &$url): void
     {
         // try getting the permalink for siteId
         try {

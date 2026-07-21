@@ -281,7 +281,7 @@ class Permalink
     public static function clearPermaLinkUrl($url, QUI\Projects\Project $Project = null)
     {
         // space separator
-        $url = \str_replace(QUI\Rewrite::URL_SPACE_CHARACTER, ' ', $url);
+        $url = str_replace(QUI\Rewrite::URL_SPACE_CHARACTER, ' ', $url);
 
         // clear
         $signs = [
@@ -311,11 +311,11 @@ class Permalink
 //            '/'            // put in 17.11.2020
         ];
 
-        $url = \str_replace($signs, '', $url);
+        $url = str_replace($signs, '', $url);
         //$url = preg_replace('[-.,:;#`!§$%&/?<>\=\'\"\@\_\]\[\+]', '', $url);
 
         // doppelte leerzeichen löschen
-        $url = \preg_replace('/([ ]){2,}/', "$1", $url);
+        $url = preg_replace('/([ ]){2,}/', "$1", $url);
 
         // URL Filter
         if ($Project !== null) {
@@ -338,7 +338,7 @@ class Permalink
             }
         }
 
-        $url = \str_replace(' ', QUI\Rewrite::URL_SPACE_CHARACTER, $url);
+        $url = str_replace(' ', QUI\Rewrite::URL_SPACE_CHARACTER, $url);
 //        QUI\System\Log::writeRecursive(['calculated Permalink is:' => $url]);
 
         return $url;
@@ -377,7 +377,7 @@ class Permalink
     public static function onRequest(QUI\Rewrite $Rewrite, string $url): void
     {
         // media files are irrelevant
-        if (\strpos($url, 'media/cache') !== false) {
+        if (strpos($url, 'media/cache') !== false) {
             return;
         }
 
@@ -391,7 +391,7 @@ class Permalink
             $Site    = self::getSiteByPermalink($Project, $url);
 
             if (
-                \strpos($url, '.html') !== false
+                strpos($url, '.html') !== false
                 && (int)QUI::conf('globals', 'htmlSuffix') === 0
             ) {
                 // redirect to original site

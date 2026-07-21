@@ -24,5 +24,6 @@ function package_quiqqer_permalinks_ajax_delete($project, $lang, $id)
 
 QUI::$Ajax->register(
     'package_quiqqer_permalinks_ajax_delete',
-    array('project', 'lang', 'id')
+    array('project', 'lang', 'id'),
+    'Permission::checkAdminUser'
 );

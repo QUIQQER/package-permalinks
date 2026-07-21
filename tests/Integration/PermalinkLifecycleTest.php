@@ -221,6 +221,15 @@ class PermalinkLifecycleTest extends TestCase
         Permalink::onRequest($Rewrite, 'missing-link');
     }
 
+    public function testRequestWithoutProjectDoesNotSelectSite(): void
+    {
+        $Rewrite = $this->createMock(QUI\Rewrite::class);
+        $Rewrite->expects(self::once())->method('getProject')->willReturn(null);
+        $Rewrite->expects(self::never())->method('setSite');
+
+        Permalink::onRequest($Rewrite, 'request-link');
+    }
+
     public function testUrlNormalizationKeepsPathSeparators(): void
     {
         self::assertSame('hello-world/path', Permalink::clearPermaLinkUrl('hello--world._/path'));

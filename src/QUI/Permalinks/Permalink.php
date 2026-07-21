@@ -388,7 +388,11 @@ class Permalink
         try {
             $Project = $Rewrite->getProject();
 
-            $Site    = self::getSiteByPermalink($Project, $url);
+            if ($Project === null) {
+                return;
+            }
+
+            $Site = self::getSiteByPermalink($Project, $url);
 
             if (
                 strpos($url, '.html') !== false

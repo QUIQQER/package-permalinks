@@ -1,7 +1,5 @@
 <?php
 
-use QUI\System\Log;
-
 QUI::$Ajax->registerFunction(
     'package_quiqqer_permalinks_ajax_permalinkClear',
     /**

@@ -8,9 +8,8 @@ namespace QUI\Permalinks;
 
 use QUI;
 use QUI\Utils\Security\Orthos;
-
-use \Symfony\Component\HttpFoundation\RedirectResponse;
-use \Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Permalink class
@@ -307,8 +306,8 @@ class Permalink
         // URL Filter
         if ($Project !== null) {
             $name   = $Project->getAttribute('name');
-            $filter = USR_DIR.'lib/'.$name.'/url.filter.php';
-            $func   = 'url_filter_'.$name;
+            $filter = USR_DIR . 'lib/' . $name . '/url.filter.php';
+            $func   = 'url_filter_' . $name;
 
             $filter = Orthos::clearPath(\realpath($filter));
 
@@ -373,8 +372,10 @@ class Permalink
 
             $Site    = self::getSiteByPermalink($Project, $url);
 
-            if (\strpos($url, '.html') !== false
-                && (int)QUI::conf('globals', 'htmlSuffix') === 0) {
+            if (
+                \strpos($url, '.html') !== false
+                && (int)QUI::conf('globals', 'htmlSuffix') === 0
+            ) {
                 // redirect to original site
                 $Redirect = new RedirectResponse($Site->getUrlRewritten());
                 $Redirect->setStatusCode(Response::HTTP_SEE_OTHER);

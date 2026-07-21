@@ -204,7 +204,7 @@ class Permalink
      *
      * @throws \QUI\Exception
      */
-    public static function deletePermalinkForSite($Site)
+    public static function deletePermalinkForSite($Site): void
     {
         $Project = $Site->getProject();
         $table   = QUI::getDBProjectTableName('permalinks', $Project, false);
@@ -224,7 +224,7 @@ class Permalink
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onSiteSaveBefore($Site)
+    public static function onSiteSaveBefore($Site): void
     {
         $permalink = $Site->getAttribute('quiqqer.permalinks.site.permalink');
         $permalink = self::clearPermaLinkUrl($permalink, $Site->getProject());
@@ -237,7 +237,7 @@ class Permalink
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onSave($Site)
+    public static function onSave($Site): void
     {
 
         if (!$Site->getAttribute('quiqqer.permalinks.site.permalink')) {
@@ -345,7 +345,7 @@ class Permalink
      *
      * @param \QUI\Projects\Site\Edit $Site
      */
-    public static function onSiteLoad($Site)
+    public static function onSiteLoad($Site): void
     {
         // if permalink exists, set the meta canonical
         try {
@@ -370,7 +370,7 @@ class Permalink
      * @param \QUI\Rewrite $Rewrite
      * @param string $url
      */
-    public static function onRequest(QUI\Rewrite $Rewrite, $url)
+    public static function onRequest(QUI\Rewrite $Rewrite, string $url): void
     {
         // media files are irrelevant
         if (\strpos($url, 'media/cache') !== false) {
@@ -413,8 +413,9 @@ class Permalink
 
     /**
      * @param \QUI\Projects\Site\Edit $Site
+     * @param string $url
      */
-    public static function onUrlRewritten($Site, &$url)
+    public static function onUrlRewritten($Site, string &$url): void
     {
         // try getting the permalink for siteId
         try {

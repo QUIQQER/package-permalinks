@@ -184,7 +184,7 @@ class Permalink
             }
 
             throw new QUI\Exception(
-                QUI::getLocale()->get('quiqqer/system', 'exception.site.not.found'),
+                QUI::getLocale()->get('quiqqer/core', 'exception.site.not.found'),
                 404
             );
         }
